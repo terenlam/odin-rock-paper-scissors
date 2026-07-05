@@ -16,77 +16,87 @@ function getHumanChoice() {
 let humanScore = 0;
 let computerScore = 0;
 
+const rockButton = document.createElement("button");
+rockButton.textContent = "rock";
+const paperButton = document.createElement("button");
+paperButton.textContent = "paper";
+const scissorButton = document.createElement("button");
+scissorButton.textContent = "scissor";
+const buttons = document.createElement("div");
+document.body.append(buttons);
+buttons.append(rockButton, paperButton, scissorButton);
+
+buttons.addEventListener("click", (event) => {
+  let target = event.target;
+  switch (target.textContent) {
+    case "rock":
+      playRound("rock", getComputerChoice());
+      break;
+    case "paper":
+      playRound("paper", getComputerChoice());
+      break;
+    case "scissor":
+      playRound("scissor", getComputerChoice());
+      break;
+  }
+});
+
 function playRound(humanSelection, computerSelection) {
-  humanSelection = humanSelection.toLowerCase();
-
-  console.log("Computer's choice: " + computerSelection);
-  console.log("Human's choice: " + humanSelection);
-
+  let output = `
+    Human's Choice:  ${humanSelection}
+    Computer's Choice:  ${computerSelection}
+  `;
   if (humanSelection === "rock" && computerSelection === "scissor") {
     ++humanScore;
-    return `
-    You win! Rock beats Scissor.
-    Human's score: ${humanScore}
-    Computer's score: ${computerScore}`;
+    output += `You win! Rock beats Scissor.`;
   } else if (humanSelection === "paper" && computerSelection === "rock") {
     ++humanScore;
-    return `
-    You win! Paper beats Rock.
-    Human's score: ${humanScore}
-    Computer's score: ${computerScore}`;
+    output += `You win! Paper beats Rock.`;
   } else if (humanSelection === "scissor" && computerSelection === "paper") {
     ++humanScore;
-    return `
-    You win! Scissor beats Paper.
-    Human's score: ${humanScore}
-    Computer's score: ${computerScore}`;
+    output += `You win! Scissor beats Paper.`;
   } else if (humanSelection === "rock" && computerSelection === "paper") {
     ++computerScore;
-    return `
-    You lose! Paper beats Rock.
-    Human's score: ${humanScore}
-    Computer's score: ${computerScore}`;
+    output += `You lose! Paper beats Rock.`;
   } else if (humanSelection === "paper" && computerSelection === "scissor") {
     ++computerScore;
-    return `
-    You lose! Scissor beats Paper.
-    Human's score: ${humanScore}
-    Computer's score: ${computerScore}`;
+    output += `You lose! Scissor beats Paper.`;
   } else if (humanSelection === "scissor" && computerSelection === "rock") {
     ++computerScore;
-    return `
-    You lose! Rock beats Scissor.
-    Human's score: ${humanScore}
-    Computer's score: ${computerScore}`;
+    output += `You lose! Rock beats Scissor.`;
   } else if (humanSelection === computerSelection) {
-    return `
-    Draw!
-    Human's score: ${humanScore}
-    Computer's score: ${computerScore}`;
+    output += `Draw!`;
   } else {
-    return `
-    Invalid choice.
+    output += `Invalid choice.`;
+  }
+  results.textContent = output;
+  score.textContent = `
     Human's score: ${humanScore}
     Computer's score: ${computerScore}`;
-  }
+  winner.textContent = getWinner();
 }
+
+const results = document.createElement("div");
+const score = document.createElement("div");
+const winner = document.createElement("div");
+buttons.append(results, score, winner);
+results.classList.add("preserve-line");
+score.classList.add("preserve-line");
 
 function getWinner() {
-  if (humanScore > computerScore) {
+  if (humanScore === 5) {
     return "You win!";
-  } else if (humanScore < computerScore) {
+  } else if (computerScore === 5) {
     return "You lose!";
-  } else if (humanScore === computerScore) {
-    return "Draw!";
   }
 }
 
-function playGame() {
-  for (let i = 1; i <= 5; i++) {
-    console.log(`Game ${i}`);
-    console.log(playRound(getHumanChoice(), getComputerChoice()));
-  }
-  console.log(getWinner());
-}
+// function playGame() {
+//   for (let i = 1; i <= 5; i++) {
+//     console.log(`Game ${i}`);
+//     console.log(playRound(getHumanChoice(), getComputerChoice()));
+//   }
+//   console.log(getWinner());
+// }
 
-playGame();
+// playGame();
